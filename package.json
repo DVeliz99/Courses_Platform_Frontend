@@ -31,7 +31,7 @@
     "angular-froala-wysiwyg": "^4.4.0",
     "bootstrap": "^5.3.3",
     "chart.js": "^4.4.8",
-    "froala-editor": "^4.4.0",
+    "froala-editor": "^4.5.1",
     "http-server": "^14.1.1",
     "izitoast": "^1.4.0",
     "jquery": "^3.7.1",

@@ -3470,7 +3470,12 @@ fresh@0.5.2:
   resolved "https://registry.npmjs.org/fresh/-/fresh-0.5.2.tgz"
   integrity sha512-zJ2mQYM18rEFOudeV4GShTGIQ7RbzA7ozbU9I/XBpm7kqgMywgmylMwXHxZJmkVoYkna9d2pVXVXPdYTP9ej8Q==
 
-froala-editor@^4.4.0, froala-editor@4.5.0:
+froala-editor@^4.5.1:
+  version "4.5.1"
+  resolved "https://registry.npmjs.org/froala-editor/-/froala-editor-4.5.1.tgz"
+  integrity sha512-hgx4JJAM80yM3PGdyj7+41OQHP+Yj59yMvknwQkizlkbo/aKn2lbEtiqPMm//thNEE6NCuGLpHCZqppR/7Vymg==
+
+froala-editor@4.5.0:
   version "4.5.0"
   resolved "https://registry.npmjs.org/froala-editor/-/froala-editor-4.5.0.tgz"
   integrity sha512-UPJGPnpQh/aL6u6BIXwrRZ+hIbYcCglKRvN0QA5RJeHckXHu/plwvkUAU4LxOqeYe6DfXSkLIay0Bjk+Oku1CA==

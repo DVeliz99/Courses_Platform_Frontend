@@ -45,7 +45,7 @@ export class AppRoutingModule { }
 
 
 
-
+//
 //Cargar el array de rutas
 
 // export const routing: ModuleWithProviders<any> = RouterModule.forRoot(routes); //objeto que tiene todas las rutas 

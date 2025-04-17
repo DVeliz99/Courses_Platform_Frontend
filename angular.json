@@ -21,7 +21,7 @@
               "@angular/localize/init"
             ],
             "tsConfig": "tsconfig.app.json",
-            "assets": [
+            "assets"2: [
               {
                 "glob": "**/*",
                 "input": "public"
@@ -40,7 +40,10 @@
             ],
             "allowedCommonJsDependencies": [
               "ora",
-              "cli-cursor"
+              "cli-cursor",
+              "jquery",
+              "froala-editor",
+              "izitoast"
             ]
           },
           "configurations": {
@@ -101,7 +104,8 @@
               "@angular/material/prebuilt-themes/azure-blue.css",
               "src/styles.css",
               "node_modules/bootstrap/dist/css/bootstrap.min.css",
-              "node_modules/@fortawesome/fontawesome-free/css/all.min.css"
+              "node_modules/@fortawesome/fontawesome-free/css/all.min.css",
+              "node_modules/froala-editor/css/froala_editor.pkgd.min.css"
             ],
             "scripts": [
               "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"
