@@ -21,7 +21,7 @@
               "@angular/localize/init"
             ],
             "tsConfig": "tsconfig.app.json",
-            "assets"2: [
+            "assets": [
               {
                 "glob": "**/*",
                 "input": "public"
