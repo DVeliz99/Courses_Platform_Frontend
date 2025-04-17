@@ -1,0 +1,85 @@
+<div class="col-sm-10 col-md-8 col-lg-6 mt-3 brutalist-card" style="margin: 0 auto;">
+    <h3 class="text-center text-white" style="font-size: 2.5em; color: 444; text-shadow: 2px 2px #000000;"> {{
+        page_title }} </h3>
+    <p *ngIf="status!= 'success'" class="text-center brutalist-card__header"
+        style="box-shadow: 5px 5px 5px rgb(255, 255, 255);"> Modifica tus
+        datos personales </p>
+    <hr>
+    <div class="alert alert-success col-md-12 mt-3 brutalist-card__message text-black" *ngIf="status == 'success'"> ¡Los
+        datos se han actualizado
+        correctamente!
+        <a href=""></a>
+    </div>
+    <div class="alert alert-danger col-md-12 mt-3 brutalist-card__message text-black"
+        *ngIf="status == 'error' && isUpdateButtonClicked"> "Error en el
+        registro. Por favor, verifica la data e intenta nuevamente." </div>
+
+    <form class="p-2 " [formGroup]="userUpdateForm" (ngSubmit)="onSubmit(userUpdateForm)" style="margin: 0 auto;">
+        <div class="form-group">
+            <label for="name" class="form-label text-white">Introduce tu nombre:</label>
+            <input type="text" class="form-control" id="name" formControlName="name">
+
+
+
+
+            <div *ngIf="userUpdateForm.get('name')?.touched && userUpdateForm.get('name')?.hasError('required')">
+                <small class="invalid-feedback d-block">Ingresa un nombre.</small>
+            </div>
+            <div *ngIf="userUpdateForm.get('name')?.hasError('pattern')">
+                <small class="invalid-feedback d-block">Ingresa un nombre válido (sin caracteres especiales).</small>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="surname" class="form-label text-white">Introduce tu apellido:</label>
+            <input type="text" class="form-control" id="surname" formControlName="surname">
+            <div *ngIf="userUpdateForm.get('surname')?.touched && userUpdateForm.get('surname')?.hasError('required')">
+                <small class="invalid-feedback d-block">Ingresa un apellido.</small>
+            </div>
+            <div *ngIf="userUpdateForm.get('surname')?.hasError('pattern')">
+                <small class="invalid-feedback d-block">Ingresa un apellido válido (sin caracteres especiales).</small>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="email" class="text-white">Introduce tu dirección de correo electrónico:</label>
+            <input type="email" id="email" class="form-control" formControlName="email">
+            <div *ngIf="userUpdateForm.get('email')?.touched && userUpdateForm.get('email')?.hasError('required')">
+                <small class="invalid-feedback d-block">Ingresa una dirección de correo electrónico válida.</small>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="description" class="text-white">Introduce lo que mejor te describa:</label>
+            <textarea [froalaEditor]="froala_options" name="description" formControlName="description" class="w-100">
+                {{ description }}
+              </textarea>
+            <div
+                *ngIf="userUpdateForm.get('description')?.touched && userUpdateForm.get('description')?.hasError('required')">
+                <small class="invalid-feedback d-block">Ingresa una descripción válida.</small>
+            </div>
+        </div>
+
+        <div class="form-group mt-1 py-3 mt-3">
+            <label for="image" class="text-white w-100">Avatar</label>
+            <div class="row p-2 border border-white d-flex align-items-center rounded-2">
+                <div class="col-12 float-start">
+                    <div class="d-flex justify-content-center align-items-center flex-column">
+                        <div>
+                            <img [src]="newAvatarUrl ? newAvatarUrl : avatarUrl" alt="" height="40" class="rounded-2">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 float-start py-1">
+                    <input type="file" name="file" ng2FileSelect [uploader]="uploader"
+                        class="rounded-2 btn-outline-info" />
+                </div>
+            </div>
+            <div class="col-12 float-start d-flex justify-content-center ">
+                <input type="submit" value="Actualizar" class="brutalist-card__button brutalist-card__button--mark">
+            </div>
+        </div>
+    </form>
+</div>
+
+<!-- (click)=upload()-->

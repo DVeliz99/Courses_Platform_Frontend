@@ -1,0 +1,282 @@
+<div class="container d-block">
+    <h1 class="text-white">
+        Categorías
+    </h1>
+
+
+
+    <button type="button" *ngIf="!isCategoryActioned" @fade class="button my-2" (click)="startCreatingCategory()">
+        <span class="button-content">Crear categoría </span>
+    </button>
+
+
+    <!--  form crear categoría-->
+
+
+
+    <div class="row d-flex justify-content-center">
+        <form [formGroup]="categoryForm" *ngIf="isCategoryActioned" @fade (ngSubmit)="onCreate(categoryForm)"
+            class="card card-hidden my-2 bg-white brutalist-card">
+
+
+
+
+            <p *ngIf="status!= 'success'" class="text-center text-black  brutalist-card__alert"
+                style="font-size: medium;">
+                Crea una nueva categoría y comparte tus ideas.
+            </p>
+
+
+            <div class="form-group ">
+                <input name="category" id="category" placeholder="NUEVA CATEGORÍA" class="form-control"
+                    formControlName="category" />
+
+                <div
+                    *ngIf="categoryForm.get('category')?.touched && categoryForm.get('category')?.hasError('required')">
+                    <small class="invalid-feedback d-block"> Por favor, ingresa una categoría valida.
+                        correcta.
+                    </small>
+                </div>
+
+            </div>
+
+
+
+            <button type="submit" class="brutalist-card__button brutalist-card__button--mark" href="#">Crear</button>
+
+
+        </form>
+    </div>
+
+    <!-- fin de form crear categoría-->
+
+
+
+
+    <div class="container ">
+        <div class="row ">
+            <div class=" mt-3 ">
+
+                <hr>
+
+                <div class="row  d-flex justify-content-center ">
+
+
+
+
+                    <div class=" d-flex justify-content-center align-content-center  ">
+                        <div class="card-container   ">
+
+                            <div *ngIf="categories" class="d-flex  justify-content-around flex-wrap">
+
+
+                                <!-- card-->
+                                <div *ngFor="let category of categories" class="  category-card">
+
+
+
+
+                                    <!-- From Uiverse.io by 0xnihilism -->
+                                    <div class="brutalist-card  mx-2 mb-4">
+
+
+                                        <div class="brutalist-card__header">
+
+                                            <div class="brutalist-card__alert  w-100">
+                                                <h5 class="text-center text-black">{{category.name}}</h5>
+                                            </div>
+                                        </div>
+
+
+                                        <!-- Botones -->
+
+
+                                        <div class="brutalist-card__actions d-flex justify-content-around"
+                                            *ngIf="identityString && (identityString.sub==1 || identityString.role == 'ROLE_ADMIN')">
+
+                                            <button type="button"
+                                                class="brutalist-card__button brutalist-card__button--read" href="#"
+                                                data-bs-toggle="modal" data-bs-target="#staticBackdrop"
+                                                (click)="onUpdateForm(category)">Eliminar</button>
+                                            <button class="brutalist-card__button brutalist-card__button--mark"
+                                                data-bs-toggle="modal" data-bs-target="#staticBackdropEdit"
+                                                (click)="onUpdateForm(category)">Editar</button>
+
+                                            <hr>
+
+
+
+                                            <!-- Modal para Eliminar categoría-->
+
+
+
+                                            <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static"
+                                                data-bs-keyboard="false" tabindex="-1"
+                                                aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                                                <div class="modal-dialog modal-brutalist-card"
+                                                    style="height: fit-content;">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <div class="float-start col-2">
+                                                                <i class="fa-solid fa-trash text-black"></i>
+                                                            </div>
+                                                            <div class="float-start col-7">
+                                                                <h5 class="modal-title ms-2 text-black"
+                                                                    id="staticBackdropLabel">
+                                                                    ¿Eliminar la categoría?
+                                                                </h5>
+                                                            </div>
+                                                            <div class="float-start col-3">
+                                                                <button type="button" class="btn-close"
+                                                                    data-bs-dismiss="modal" aria-label="Close"
+                                                                    style="background-color:#FFF;"></button>
+                                                            </div>
+                                                        </div>
+                                                        <div class="modal-body text-black">
+                                                            La categoría <strong>{{categoryToEdit?.name}}</strong> será
+                                                            eliminada con el
+                                                            id
+                                                            {{categoryToEdit?.id}}
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="exit-button"
+                                                                data-bs-dismiss="modal"></button>
+
+
+                                                            <div class="d-flex w-100 justify-content-between">
+                                                                <button type="button"
+                                                                    class="brutalist-card__button brutalist-card__button--read"
+                                                                    data-bs-dismiss="modal"
+                                                                    (click)="deleteCategory(categoryToEdit?.id)">Eliminar</button>
+                                                                <button type=" button"
+                                                                    class="brutalist-card__button brutalist-card__button--mark"
+                                                                    data-bs-dismiss="modal">Cancelar</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- Fin Modal-->
+
+
+                                            <!-- Modal para editar categoría-->
+
+                                            <div class="modal fade " id="staticBackdropEdit" data-bs-backdrop="static"
+                                                data-bs-keyboard="false" tabindex="-1"
+                                                aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                                                <div class="modal-dialog modal-brutalist-card"
+                                                    style="height: fit-content;">
+                                                    <div class="modal-content  " style="z-index: 1000;">
+                                                        <div class="modal-header ">
+                                                            <div>
+                                                                <strong> <i class="fa-solid fa-info "
+                                                                        style="color: #000;"></i> </strong>
+                                                            </div>
+                                                            <div>
+                                                                <h5 class="modal-title ms-2 text-black"
+                                                                    id="staticBackdropLabel">
+                                                                    ¿Editar la categoría?
+                                                                </h5>
+                                                            </div>
+
+                                                            <button type="button" class="btn-close"
+                                                                data-bs-dismiss="modal" aria-label="Close"
+                                                                style="color:#000;">
+                                                            </button>
+                                                        </div>
+
+
+
+
+                                                        <form [formGroup]="categoryForm"
+                                                            class=" my-2 bg-white border border-black w-100 bg-transparent"
+                                                            (ngSubmit)="onUpdateCategory(categoryForm)">
+
+
+                                                            <div class="row">
+                                                                <div class="col-12 float-start text-black">
+                                                                    La categoría
+                                                                    <strong>{{categoryToEdit?.name}}</strong> será
+                                                                    editada
+
+                                                                </div>
+
+                                                            </div>
+
+                                                            <div class="form-group w-100">
+                                                                <input type="hidden" name="category" id="category"
+                                                                    formControlName="id" name="id"
+                                                                    value="{{category.id}}">
+
+
+                                                            </div>
+
+
+
+
+                                                            <div class="form-group my-2">
+                                                                <input name="category" id="category"
+                                                                    placeholder="Ingresar categoría"
+                                                                    class="form-control" formControlName="category" />
+
+
+
+                                                                <div
+                                                                    *ngIf="categoryForm.get('category')?.touched && categoryForm.get('category')?.hasError('required')">
+                                                                    <small class="invalid-feedback d-block"> Por favor,
+                                                                        ingresa
+                                                                        una
+                                                                        categoría valida.
+                                                                    </small>
+                                                                </div>
+
+                                                            </div>
+
+                                                            <div class="row row d-flex justify-content-around">
+
+
+
+                                                                <button type="submit"
+                                                                    class="brutalist-card__button brutalist-card__button--read"
+                                                                    data-bs-dismiss="modal">Editar</button>
+
+
+
+
+
+                                                            </div>
+
+                                                        </form>
+
+
+
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                            <!-- Fin Modal-->
+
+                                        </div>
+
+                                        <!-- Fin Botones -->
+
+
+                                    </div>
+
+
+
+                                    <!-- Fin de card UI-->
+
+
+                                </div>
+
+                                <!-- fin de card-->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

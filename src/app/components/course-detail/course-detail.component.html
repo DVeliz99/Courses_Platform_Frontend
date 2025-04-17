@@ -1,0 +1,416 @@
+<div class="container">
+
+    <div class="row ">
+        <div class="chart-container float-start " style="width: fit-content;">
+            <p-chart #chart type="pie" [data]="data" [options]="options" width="70" height="70"></p-chart>
+
+        </div>
+    </div>
+
+    <div class="row ">
+        <div *ngIf="isCourse && course && !isVideo" class="col-12 d-flex justify-content-center">
+
+            <div class="col-10 col-xl-6 col-md-8 col-sm-10 ">
+                <div class="brutalist-card mt-2">
+                    <div *ngIf="courseUrlSafe; else loading">
+                        <iframe height="315" width="100%" [src]="courseUrlSafe" title="YouTube video player"
+                            frameborder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                            referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                    </div>
+
+                    <ng-template #loading>
+                        <h2 class="text-white">Cargando...</h2>
+                    </ng-template>
+
+
+
+
+                </div>
+
+
+
+                <div *ngIf="course.detail">
+                    <p [innerHTML]="course.name" class="brutalist-card__message text-white "></p>
+                </div>
+
+            </div>
+
+
+
+
+        </div>
+
+        <div *ngIf="isVideo && videoUrlSafe && !isCourse" class="col-12 d-flex justify-content-center">
+
+            <div class="col-10 col-xl-6 col-md-8 col-sm-10 ">
+                <div class="brutalist-card mt-2">
+                    <div *ngIf="videoUrlSafe; else loading">
+                        <iframe height="315" width="100%" [src]="videoUrlSafe" title="YouTube video player"
+                            frameborder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                            referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                    </div>
+
+                    <ng-template #loading>
+                        <h2 class="text-white">Cargando...</h2>
+                    </ng-template>
+
+
+
+
+                </div>
+
+
+
+                <div *ngIf="course.detail">
+                    <p [innerHTML]="course.name" class="brutalist-card__message text-white "></p>
+                </div>
+
+            </div>
+
+
+
+
+        </div>
+
+
+        <div class="col-12 mb-3 border border-white">
+            <div class="btns mt-3 d-flex flex-row justify-content-around">
+                <a href="" class="brutalist-card__button brutalist-card__button--mark" data-bs-toggle="collapse"
+                    data-bs-target="#multiCollapseChat" role="button" aria-expanded="false" (click)="toggleChat()">
+
+                    <strong> Preguntas y Respuestas</strong>
+                </a>
+
+                <a href="" class="brutalist-card__button brutalist-card__button--mark" data-bs-toggle="collapse"
+                    data-bs-target="#multiCollapseDescription" role="button" aria-expanded="false"
+                    (click)="toggleDescription()">
+                    <!-- (click)="toggleVisibility()"-->
+                    <strong>Descripción</strong>
+                </a>
+
+                <a href="" class="brutalist-card__button brutalist-card__button--mark" data-bs-toggle="collapse"
+                    data-bs-target="#multiCollapseContent" role="button" aria-expanded="false"
+                    (click)="toggleContent()">
+                    <!-- (click)="toggleVisibility()"--> <strong>Contenido</strong></a>
+
+
+            </div>
+
+
+
+
+
+
+
+
+        </div>
+
+
+        <!-- chat-->
+
+
+        <div class="col-12" *ngIf="playingVideoId">
+            <div [ngbCollapse]="isChatCollapsed">
+                <div class="collapse" id="multiCollapseChat">
+                    <app-video-detail></app-video-detail>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- fin chat-->
+
+
+        <!-- Descripción-->
+        <div class="col-12" *ngIf="course">
+            <div [ngbCollapse]="isDescriptionCollapsed">
+                <div class="collapse" id="multiCollapseDescription">
+                    <div class="card card-body ">
+                        {{course.detail}}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+        <!-- fin Descripción-->
+
+
+
+
+
+
+        <!-- p-accordion -->
+
+        <div [ngbCollapse]="isContentCollapsed">
+
+
+
+            <div class="py-2" *ngIf="accordionData">
+                <p-accordion *ngFor="let accordion of accordionData; let i = index" [value]="i"
+                    class="custom-accordion">
+                    <p-accordion-panel value="{{i}}">
+                        <p-accordion-header>
+
+                            <a id="header_title" class="w-100 ">
+                                <strong>{{accordion.section_name ?
+                                    accordion.section_name :
+                                    'sección #' + (i + 1)}} </strong></a>
+                            <!-- || Header {{i + 1}}-->
+
+                        </p-accordion-header>
+
+
+                        <ng-container *ngFor="let video of videosData">
+                            <p-accordion-content
+                                *ngIf="displayNone(video.section, accordion.num_of_section, i) !== 'd-none'" class="">
+
+
+                                <div [ngClass]="displayNone(video.section,accordion.num_of_section,i)"
+                                    *ngIf="isCourseBought(course_id)" class="py-1">
+                                    <p class="`m-{{i}}`">
+                                        <!-- Contenido del indice {{i}} || -->
+                                        <a id="p-text">
+                                            {{video.created_at | date: 'dd/MM/yy'}}
+                                        </a>
+                                        ||
+                                        <a id="p-text " class="video-title" (click)="getVideo(video.id)"
+                                            matTooltip="Reproducir video ">
+                                            {{video.title}}
+                                        </a>
+
+                                        <input type="checkbox" value="1" class="course float-end"
+                                            (click)="clickCheckBox($event,video.id,video.course_id)"
+                                            [checked]="isChecked(video.id,video.course_id)">
+                                        <!--  -->
+
+                                    </p>
+
+
+
+                                    <!-- Botones -->
+
+
+                                    <div class="brutalist-card__actions d-flex justify-content-around"
+                                        *ngIf="identityString && (identityString.sub==1 || identityString.role == 'ROLE_ADMIN')">
+
+                                        <button type="button"
+                                            class="brutalist-card__button brutalist-card__button--read" href="#"
+                                            data-bs-toggle="modal" data-bs-target="#staticBackdrop"
+                                            (click)="onUpdateCurrentVideo(video)">Eliminar</button>
+                                        <button class="brutalist-card__button brutalist-card__button--mark"
+                                            data-bs-toggle="modal" data-bs-target="#staticBackdropEdit"
+                                            (click)="onUpdateCurrentVideo(video)">Editar</button>
+
+                                        <hr>
+
+
+
+                                        <!-- Modal para Eliminar categoría-->
+
+
+
+                                        <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static"
+                                            data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel"
+                                            aria-hidden="true">
+                                            <div class="modal-dialog modal-brutalist-card" style="height: fit-content;">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <div class="float-start col-2">
+                                                            <i class="fa-solid fa-trash text-black"></i>
+                                                        </div>
+                                                        <div class="float-start col-7">
+                                                            <h5 class="modal-title ms-2 text-black"
+                                                                id="staticBackdropLabel">
+                                                                ¿Eliminar el video?
+                                                            </h5>
+                                                        </div>
+                                                        <div class="float-start col-3">
+                                                            <button type="button" class="btn-close"
+                                                                data-bs-dismiss="modal" aria-label="Close"
+                                                                style="background-color:#FFF;"></button>
+                                                        </div>
+                                                    </div>
+                                                    <div class="modal-body text-black">
+                                                        El video <strong>{{videoToEdit?.title}}</strong> será
+                                                        eliminada con el
+                                                        id
+                                                        {{videoToEdit?.id}}
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="exit-button"
+                                                            data-bs-dismiss="modal"></button>
+
+
+                                                        <div class="d-flex w-100 justify-content-between">
+                                                            <button type="button"
+                                                                class="brutalist-card__button brutalist-card__button--read"
+                                                                data-bs-dismiss="modal"
+                                                                (click)="onDeleteVideo(videoToEdit?.id)">Eliminar</button>
+                                                            <button type=" button"
+                                                                class="brutalist-card__button brutalist-card__button--mark"
+                                                                data-bs-dismiss="modal">Cancelar</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Fin Modal-->
+
+
+                                        <!-- Modal para editar categoría-->
+
+                                        <div class="modal fade " id="staticBackdropEdit" data-bs-backdrop="static"
+                                            data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel"
+                                            aria-hidden="true">
+                                            <div class="modal-dialog modal-brutalist-card" style="height: fit-content;">
+                                                <div class="modal-content  " style="z-index: 1000;">
+                                                    <div class="modal-header">
+                                                        <div class="float-start col-2">
+                                                            <strong> <i class="fa-solid fa-info "
+                                                                    style="color: #000;"></i> </strong>
+                                                        </div>
+                                                        <div class="float-start col-8">
+                                                            <h5 class="modal-title ms-2 text-black text-center"
+                                                                id="staticBackdropLabel">
+                                                                ¿Editar el video?
+                                                            </h5>
+                                                        </div>
+
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                            aria-label="Close" style="color:#000;">
+                                                        </button>
+                                                    </div>
+
+
+
+
+                                                    <form [formGroup]="videoForm"
+                                                        class=" my-2 bg-white border border-black w-100 bg-transparent"
+                                                        (ngSubmit)="onUpdateVideo(videoForm)">
+
+
+
+
+
+
+
+                                                        <div class="form-group my-2">
+                                                            <input name="title" id="title" formControlName="title"
+                                                                class="form-control" />
+
+
+
+                                                            <div
+                                                                *ngIf="videoForm.get('title')?.touched && videoForm.get('title')?.hasError('required')">
+                                                                <small class="invalid-feedback d-block"> Por favor,
+                                                                    ingresa
+                                                                    una
+                                                                    sección valida.
+                                                                </small>
+                                                            </div>
+
+                                                        </div>
+
+                                                        <div class="form-group ">
+                                                            <label for="content" class="text-white">Inserta
+                                                                descripción del curso:</label>
+                                                            <textarea [froalaEditor]="froala_options" name="content"
+                                                                formControlName="content" class="w-100">
+                                                                {{ course.detail }}
+                                                              </textarea>
+                                                            <div
+                                                                *ngIf="videoForm.get('content')?.touched && videoForm.get('content')?.hasError('required')">
+                                                                <small class="invalid-feedback d-block">Ingresa una
+                                                                    descripción válida.</small>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="form-group">
+                                                            <label for="url" class="form-label ">URL del video
+                                                            </label>
+                                                            <input type="text" class="form-control" id="youtubeURL"
+                                                                formControlName="url">
+
+                                                            <!-- Mensaje si el campo está vacío -->
+                                                            <div
+                                                                *ngIf="videoForm.get('url')?.touched && videoForm.get('url')?.hasError('required')">
+                                                                <small class="invalid-feedback d-block">Ingresa una
+                                                                    URL
+                                                                    de Youtube.</small>
+                                                            </div>
+
+                                                            <!-- validar es un nombre valido-->
+                                                            <div *ngIf="videoForm.get('url')?.hasError('pattern')">
+                                                                <small class="invalid-feedback d-block">Ingresa una
+                                                                    URL
+                                                                    válido.</small>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="row row d-flex justify-content-around">
+
+
+
+                                                            <button type="submit"
+                                                                class="brutalist-card__button brutalist-card__button--read"
+                                                                data-bs-dismiss="modal">Editar</button>
+
+
+
+
+
+                                                        </div>
+
+                                                    </form>
+
+
+
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        <!-- Fin Modal-->
+
+                                    </div>
+
+                                    <!-- Fin Botones -->
+
+                                </div>
+
+
+
+
+
+                            </p-accordion-content>
+                        </ng-container>
+
+
+
+
+                    </p-accordion-panel>
+
+
+                </p-accordion>
+
+            </div>
+
+
+
+
+        </div>
+
+
+
+
+        <!-- fin de p-accordion-->
+
+
+
+    </div>
+
+</div>

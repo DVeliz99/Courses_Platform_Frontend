@@ -1,0 +1,306 @@
+<div class="container">
+
+
+
+
+
+    <div class="">
+
+        <!--  commentario-->
+
+        <div *ngFor="let comment of comments; let index=index" class="bg-white mb-3 ">
+
+            <div *ngFor="let user of users;let i=index">
+                <div *ngIf="user.id==comment.user_id" class="">
+
+
+
+
+
+
+                    <!-- From Uiverse.io by zanina-yassine -->
+                    <div class="border border-black">
+                        <span class="title">Comments</span>
+                        <div class="comments ">
+                            <div class="comment-react">
+                                <button (click)="getReplies(comment.id)">
+                                    <i class="fa-solid fa-comment"> </i>
+                                </button>
+                                <hr>
+                                <span>{{
+                                    repliesXcomment_cant[comment.id]?.quantityOfReplies
+                                    }}</span>
+                            </div>
+                            <div class="comment-container ">
+                                <div class="user">
+                                    <div class="user-pic">
+                                        <img *ngIf="user.image" src="{{getAvatarPath(user.name,user.image)}}" alt="img"
+                                            height="40">
+                                    </div>
+                                    <div class="user-info">
+                                        <h6>{{user.name}}</h6>
+                                        <p>{{comment.created_at | date: 'dd/MM/yy'}}</p>
+                                    </div>
+                                </div>
+                                <p class="comment-content "><strong>{{comment.comment}}</strong></p>
+
+
+                            </div>
+
+
+                        </div>
+
+                        <div class="">
+                            <!-- toggle para la img del commentario-->
+
+                            <!-- usar modal para la imagen-->
+
+
+
+                            <div *ngIf="comment.image" class="col-12 d-flex justify-content-center">
+                                <button type="button" class="brutalist-card__button brutalist-card__button--mark"
+                                    data-bs-toggle="modal" data-bs-target="#staticBackdrop"
+                                    (click)="updateCurrentComment(comment)">
+                                    <h6><strong><i class="fa-solid fa-image"></i></strong></h6>
+                                </button>
+                            </div>
+
+
+
+
+                            <div *ngIf="comment.user_id==identityString.sub" class="d-flex justify-content-around">
+                                <button type="button" class="brutalist-card__button brutalist-card__button--mark"
+                                    (click)="activateEditMode(comment)">
+
+                                    <h6><strong><i class="fa-solid fa-pencil"></i></strong></h6>
+
+
+                                </button>
+
+                                <button type="button" class="brutalist-card__button brutalist-card__button--read"
+                                    (click)="onDelete(comment.id)">
+                                    <h6 class="fs-sm"><strong><i class="fa-solid fa-trash"></i> </strong></h6>
+                                </button>
+                            </div>
+
+
+
+                            <!-- Modal para ver image-->
+
+                            <div class="modal fade " id="staticBackdrop" data-bs-backdrop="static"
+                                data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel"
+                                aria-hidden="true">
+                                <div class="modal-dialog " style="height: fit-content;">
+                                    <div class="modal-content brutalist-card" style="z-index: 1000;">
+                                        <div class="modal-header ">
+
+                                            <h2>Imagen</h2>
+
+
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                aria-label="Close" style="color:#000;">
+                                            </button>
+                                        </div>
+
+
+                                        <div class="modal-body">
+                                            <div *ngIf="currentComment.image" class="d-flex justify-content-center">
+                                                <img *ngIf="currentComment?.image"
+                                                    [src]="getCommentImagePath(currentComment.image)" alt="img"
+                                                    height="120">
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                    <!-- Fin Modal-->
+
+
+
+                                </div>
+
+                            </div>
+
+                            <!-- fin Modal para ver image-->
+                        </div>
+
+
+
+
+
+                    </div>
+
+                    <!--fin de comment uiverse-->
+
+
+                </div>
+
+            </div>
+
+
+            <!-- Replies-->
+
+            <div *ngIf="showResponses && currentCommentId==comment.id">
+                <app-replies></app-replies>
+
+            </div>
+            <!-- Fin Replies-->
+
+
+
+
+        </div>
+        <!-- Fin commentario-->
+
+
+
+        <a class="brutalist-card__button brutalist-card__button--mark" (click)="toggleTextTarea()">hacer pregunta</a>
+
+        <div *ngIf="showTextArea">
+            <div class="">
+                <div *ngIf="!isEditing ">
+                    <p class="text-white" *ngIf="status != 'success'">
+                        Añade una nueva pregunta sobre la clase
+                    </p>
+
+                </div>
+
+                <div class="alert alert-success col-md-12 mt-3 text-black" *ngIf="status == 'success'">
+                    ¡El comentario se ha guardado con éxito!
+                </div>
+
+                <div class="alert alert-danger col-md-12 mt-3 text-black"
+                    *ngIf="status != 'success' && isCreateCommentbuttonClicked">
+                    "Error en el registro. Por favor, verifica la data e intenta nuevamente."
+                </div>
+
+                <form class="  p-2" [formGroup]="commentForm" (ngSubmit)="onCreate(commentForm)"
+                    style="margin: 0 auto;">
+
+                    <!-- comentario-->
+
+                    <div class="form-group">
+
+                        <textarea [froalaEditor]="froala_options" name="comment" formControlName="comment"
+                            class="w-100">
+
+
+                        </textarea>
+
+                        <div
+                            *ngIf="commentForm.get('comment')?.touched && commentForm.get('comment')?.hasError('required')">
+                            <small class="invalid-feedback d-block">Ingresa un comentario.</small>
+                        </div>
+
+                    </div>
+
+                    <!-- imagen-->
+
+                    <div class="form-group mt-1 py-3 mt-3">
+
+                        <div class="d-flex justify-content-center">
+                            <button type="button" class="brutalist-card__button brutalist-card__button--mark"
+                                data-bs-toggle="modal" data-bs-target="#staticImageModal">
+                                <h6><strong><i class="fa-solid fa-image"></i></strong></h6>
+                            </button>
+                        </div>
+
+
+
+
+
+
+                        <!-- Modal para ver editar o subir imagen -->
+
+                        <div class="modal fade " id="staticImageModal" data-bs-backdrop="static"
+                            data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel"
+                            aria-hidden="true">
+                            <div class="modal-dialog " style="height: fit-content;">
+                                <div class="modal-content brutalist-card" style="z-index: 1000;">
+                                    <div class="modal-header ">
+
+                                        <h2>Imagen</h2>
+
+
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close" style="color:#000;">
+                                        </button>
+                                    </div>
+
+
+
+
+
+                                    <div class="d-flex justify-content-between">
+
+                                        <div *ngIf="commenToEdit.image  && isEditing"
+                                            class="d-flex justify-content-center">
+                                            <img [src]="getCommentImagePath(commenToEdit.image)" alt="image" id="imagen"
+                                                height="120">
+                                        </div>
+
+                                        <button type="button"
+                                            class="brutalist-card__button brutalist-card__button--read float-end"
+                                            data-bs-toggle="modal" data-bs-target="#staticBackdrop"
+                                            (click)="clearQueue()">
+                                            <h6 class="fs-sm"><strong><i class="fa-solid fa-trash"></i> </strong></h6>
+                                        </button>
+                                    </div>
+
+                                    <label for="image" class="text-white w-100">Imagen</label>
+                                    <div class="row border border-white d-flex  rounded-2">
+
+                                        <input type="file" id="file" name="file" ng2FileSelect [uploader]="uploader"
+                                            class="rounded-2 btn-outline-info" />
+
+                                    </div>
+
+
+                                </div>
+
+                                <!-- Fin Modal-->
+
+
+
+                            </div>
+
+                        </div>
+
+                        <!-- fin Modal para ver image-->
+
+
+                    </div>
+
+                    <!-- Fin imagen-->
+
+                    <!-- botones para modificar-->
+                    <div class="d-flex justify-content-around" *ngIf="isEditing">
+                        <button type="button" class="brutalist-card__button  border-white check-button"
+                            (click)="onEdit()">
+                            <h6 class="fs-sm"><strong><i class="fa-regular fa-circle-check"></i> </strong></h6>
+                        </button>
+
+
+                        <button class="brutalist-card__button brutalist-card__button--read border border-white"
+                            (click)="cancelEditMode()">
+
+                            <h6><strong><i class="fa-solid fa-xmark"></i></strong></h6>
+
+
+                        </button>
+                    </div>
+
+                    <div *ngIf="!isEditing">
+                        <div class="col-12 float-start d-flex justify-content-center ">
+                            <input type="submit" value="Crear"
+                                class="brutalist-card__button brutalist-card__button--mark">
+                        </div>
+                    </div>
+
+                </form>
+
+            </div>
+        </div>
+
+    </div>
+</div>

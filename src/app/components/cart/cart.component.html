@@ -1,0 +1,132 @@
+<div class="container ">
+    <div class="row ">
+        <div class=" mt-3 ">
+
+            <div class="row d-flex justify-content-center align-items-center h-100">
+                <div class="col-12 " *ngIf="quantity>0">
+                    <div class="card card-registration card-registration-2 rounded brutalist-card">
+                        <div class="card-body p-0">
+                            <div class="row g-0">
+                                <div class="col-lg-8">
+                                    <div class="p-5">
+                                        <div class="d-flex justify-content-between align-items-center mb-5">
+                                            <h1 class="fw-bold mb-0">Carrito de compras</h1>
+
+                                        </div>
+                                        <hr class="my-4">
+
+                                        <!-- Articulos-->
+
+                                        <div>
+                                            <div *ngFor="let courseOnCart of coursesOnCart"
+                                                class="row mb-4 d-flex justify-content-between align-items-center ">
+                                                <div class="col-md-2 col-lg-2 col-xl-2">
+                                                    <img src="{{url + 'course/image/'+courseOnCart.image}}" height="60"
+                                                        alt="img">
+                                                </div>
+                                                <div class="col-md-3 col-lg-3 col-xl-3">
+                                                    <h6 class="text-muted">Curso</h6>
+                                                    <h6 class="mb-0">{{courseOnCart.name}}</h6>
+                                                </div>
+                                                <div class="col-md-3 col-lg-3 col-xl-2 d-flex">
+
+
+                                                    <input id="form1" min="0" name="quantity" value="1" type="number"
+                                                        class="form-control form-control-sm" readonly />
+
+
+                                                </div>
+                                                <div class="col-md-3 col-lg-2 col-xl-2 offset-lg-1">
+                                                    <h6 class="mb-0">${{courseOnCart.price_now}}</h6>
+                                                </div>
+                                                <div class="col-md-1 col-lg-1 col-xl-1 text-end">
+                                                    <button href="#!" class="bg-transparent"
+                                                        (click)="deleteCartItem(courseOnCart.id)"><i
+                                                            class="fas fa-times">
+
+                                                        </i></button>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Fin Articulos-->
+
+                                        <hr class="my-4">
+
+
+
+                                        <div class="pt-5">
+                                            <h6 class="mb-0"><a href="#!" routerLink="/home" class="text-body"><i
+                                                        class="fas fa-long-arrow-alt-left me-2"></i>Regresar</a></h6>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 bg-body-tertiary">
+                                    <div class="p-5">
+                                        <h3 class="fw-bold mb-5 mt-2 pt-1">Desglose</h3>
+                                        <hr class="my-4">
+
+                                        <div class="d-flex justify-content-between mb-4">
+                                            <h5 class="text-uppercase">Articulos: {{quantity? quantity :0}}</h5>
+                                            <h5>${{subTotal}}</h5>
+                                        </div>
+
+
+
+                                        <h5 class="text-uppercase mb-3">¿Algún código?</h5>
+
+                                        <div class="mb-5">
+                                            <div data-mdb-input-init class="form-outline">
+                                                <input type="text" id="form3Examplea2"
+                                                    class="form-control form-control-lg" />
+                                                <label class="form-label" for="form3Examplea2">Ingresa tu código</label>
+                                            </div>
+                                        </div>
+
+                                        <hr class="my-4">
+
+                                        <div class="d-flex justify-content-between mb-5">
+                                            <h5 class="text-uppercase">precio total</h5>
+                                            <h5>${{subTotal}}
+                                            </h5>
+                                        </div>
+
+                                        <button type="button" data-mdb-button-init data-mdb-ripple-init
+                                            class="btn btn-dark btn-block btn-lg" data-mdb-ripple-color="dark"
+                                            (click)="onBuy()">Registrar compra</button>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+
+                <div class="row  card-registration card-registration-2 rounded brutalist-card text-black black border-black"
+                    *ngIf="quantity==0">
+                    <div class="col-8 float-start align-items-center">
+                        <h6> ¡Ups! Tu carrito de compras está vacío. ¡Agrega algunos productos y vuelve a intentarlo!
+                        </h6>
+                    </div>
+
+                    <div class="col-4 float-start">
+                        <div class="float-end">
+                            <h6 class="mb-0"><a href="#!" routerLink="/home" class="text-body"><i
+                                        class="fas fa-long-arrow-alt-left me-2"></i>Regresar</a></h6>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+
+
+        <div class=" d-flex justify-content-center align-content-center  ">
+            <div class="card-container   ">
+            </div>
+        </div>
+    </div>
+</div>

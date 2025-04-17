@@ -1,0 +1,27 @@
+@media (min-width: 1025px) {
+    .h-custom {
+        height: 100vh !important;
+    }
+}
+
+.card-registration .select-input.form-control[readonly]:not([disabled]) {
+    font-size: 1rem;
+    line-height: 2.15;
+    padding-left: .75em;
+    padding-right: .75em;
+}
+
+.card-registration .select-arrow {
+    top: 13px;
+}
+
+
+.brutalist-card {
+
+    border: 4px solid rgb(9, 9, 9);
+    background-color: #fff;
+    padding: 1.5rem;
+    box-shadow: 8px 8px 0 rgb(255, 255, 255);
+    font-family: "Arial", sans-serif;
+    float: left;
+}

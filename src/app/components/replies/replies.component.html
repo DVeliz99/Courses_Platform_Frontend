@@ -1,0 +1,316 @@
+<div class="p-2 border border-black row" style="height: fit-content;">
+    <span class="title"><strong>Respuestas</strong></span>
+
+    <div *ngIf="repliesData.length > 0;else loading" class="">
+
+
+        <div>
+            <div class="comments p-2 " *ngFor="let reply of repliesData">
+                <div class=" " *ngIf="usersReply.length>0">
+                    <div class="user d-flex flex-row" *ngFor="let user of usersReply">
+                        <div class="d-flex flex-column col-10 ">
+                            <div *ngIf="user.id==reply.user_id">
+                                <div class="user-pic" *ngIf="user.image">
+                                    <img *ngIf="user?.image" src="{{getAvatarPath(user?.image)}}" alt="img" height="40">
+                                </div>
+                                <div class="user-info">
+                                    <h6>{{user.name}}</h6>
+
+                                </div>
+                            </div>
+                            <div>
+                                <p>{{reply.created_at | date: 'dd/MM/yy'}}</p>
+                            </div>
+
+                            <div>
+                                <p class="comment-content "><strong>{{reply.response}}</strong></p>
+                            </div>
+                        </div>
+
+                        <div class="col-2  " style="justify-items: center; align-items: center;">
+
+                            <!-- <a href="" class="brutalist-card__button brutalist-card__button--mark">
+    
+                                <strong> <i class="fa-solid fa-image"></i></strong>
+                            </a> -->
+
+                            <button type="button" class="brutalist-card__button brutalist-card__button--mark"
+                                data-bs-toggle="modal" data-bs-target="#editReply" (click)="updateCurrentReply(reply)">
+                                <h6><strong><i class="fa-solid fa-pen"></i></strong></h6>
+                            </button>
+
+                            <button type="button" class="brutalist-card__button brutalist-card__button--read"
+                                (click)="onDelete(reply)">
+                                <h6><strong><i class="fa-solid fa-trash"></i></strong></h6>
+                            </button>
+
+                            <button type="button" class="brutalist-card__button brutalist-card__button--mark"
+                                data-bs-toggle="modal" data-bs-target="#currentReplyImage"
+                                (click)="updateCurrentReply(reply)">
+                                <h6><strong><i class="fa-solid fa-image"></i></strong></h6>
+                            </button>
+
+                            <!-- <a href="" class="brutalist-card__button brutalist-card__button--read">
+                               <strong><i class="fa-solid fa-trash"></i></strong></a> -->
+                            <!-- (click)="toggleVisibility()"-->
+
+
+                            <!-- Modal para ver editar o subir imagen -->
+
+                            <div class="modal fade " id="currentReplyImage" data-bs-backdrop="static"
+                                data-bs-keyboard="false" tabindex="-1" aria-labelledby="currentReplyImageLabel"
+                                aria-hidden="true">
+                                <div class="modal-dialog " style="height: fit-content;">
+                                    <div class="modal-content brutalist-card" style="z-index: 1000;">
+                                        <div class="modal-header ">
+
+                                            <h2>Imagen</h2>
+
+
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                aria-label="Close" style="color:#000;">
+                                            </button>
+                                        </div>
+
+
+                                        <div class="">
+
+
+
+
+                                        </div>
+
+                                        <label for="image" class="text-white w-100">Imagen</label>
+                                        <div class=" d-flex justify-content-center" *ngIf="replyToEdit.image">
+                                            <img src="{{getReplyImagePath(replyToEdit.image)}}" alt="" height="100">
+
+                                        </div>
+
+
+                                    </div>
+
+                                    <!-- Fin Modal-->
+
+
+
+                                </div>
+
+                            </div>
+
+                            <!-- fin Modal para ver image-->
+
+
+                        </div>
+
+
+                        <!-- Modal para ver image-->
+
+                        <div class="modal fade " id="editReply" data-bs-backdrop="static" data-bs-keyboard="false"
+                            tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                            <div class="modal-dialog " style="height: fit-content;">
+                                <div class="modal-content brutalist-card" style="z-index: 1000;">
+                                    <div class="modal-header ">
+
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close" style="color:#000;">
+                                        </button>
+                                    </div>
+
+
+
+
+                                    <div class="modal-body d-flex flex-column">
+
+                                        <div>
+                                            <form [formGroup]="replyForm" action="
+                                            " (ngSubmit)="onEdit(replyForm)">
+                                                <div class="form-group">
+                                                    <label for="reply" class="text-white">Respuesta:</label>
+                                                    <!-- se cambia lo que esta en el campo email del objeto user gracias a la directiva de Angular (ngModel)-->
+
+
+                                                    <textarea [froalaEditor]="froala_options" name="reply"
+                                                        formControlName="reply" class="w-100">
+
+
+                                                </textarea>
+
+                                                    <!-- Si el campo ya fue tocado y el email no es valido -->
+
+                                                    <div
+                                                        *ngIf="replyForm.get('reply')?.touched && replyForm.get('reply')?.hasError('required')">
+                                                        <small class="invalid-feedback d-block">Respuesta no es valida
+
+                                                        </small>
+                                                    </div>
+
+
+
+
+                                                </div>
+
+
+                                                <div class="form-group">
+
+                                                    <div *ngIf="replyToEdit.image"
+                                                        class="d-flex justify-content-center">
+                                                        <img *ngIf="replyToEdit.image"
+                                                            src="{{getReplyImage(replyToEdit?.image)}}" alt="img"
+                                                            height="100">
+                                                    </div>
+
+                                                    <div class="row border border-white d-flex  rounded-2">
+
+                                                        <input type="file" id="file" name="file" ng2FileSelect
+                                                            [uploader]="uploader" class="rounded-2 btn-outline-info" />
+
+                                                    </div>
+
+                                                </div>
+
+                                                <div class="d-flex justify-content-center mt-2">
+                                                    <input type="submit" name="" value="Actualizar"
+                                                        class=" brutalist-card__button--mark brutalist-card__button text-black rounded-5"
+                                                        data-bs-dismiss="modal" aria-label="Close"
+                                                        [disabled]="replyForm.invalid">
+                                                </div>
+
+
+
+                                            </form>
+
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <!-- Fin Modal-->
+
+
+
+                            </div>
+
+                        </div>
+
+                        <!-- fin Modal para ver image-->
+                    </div>
+
+
+
+                </div>
+
+
+            </div>
+        </div>
+
+    </div>
+
+    <div *ngIf="currentCommentId && showCreateReply">
+        <div class="" style="height: fit-content;">
+
+
+            <div class="alert alert-success col-md-12 mt-3 text-black"
+                *ngIf="status == 'success' && isCreateReplybuttonClicked">
+                ¡La respuesta se ha guardado con éxito!
+            </div>
+
+            <div class="alert alert-danger col-md-12 mt-3 text-black"
+                *ngIf="status != 'success'  && isCreateReplybuttonClicked">
+                "Error en el registro. Por favor, verifica la data e intenta nuevamente."
+            </div>
+
+            <form class="  p-2" [formGroup]="replyForm" (ngSubmit)="onCreate(replyForm)" style="margin: 0 auto;"
+                style="height: fit-content;">
+
+                <!-- comentario-->
+
+                <div class="form-group">
+
+                    <textarea [froalaEditor]="froala_options" name="reply" formControlName="reply" class="w-100">
+
+
+                    </textarea>
+
+                    <div *ngIf="replyForm.get('reply')?.touched && replyForm.get('reply')?.hasError('required')">
+                        <small class="invalid-feedback d-block">Ingresa una respuesta.</small>
+                    </div>
+
+                </div>
+
+                <div class="py-2">
+                    <div class="col-12 d-flex justify-content-center">
+                        <button type="button" class="brutalist-card__button brutalist-card__button--mark"
+                            data-bs-toggle="modal" data-bs-target="#staticImageModal">
+                            <h6><strong><i class="fa-solid fa-image"></i></strong></h6>
+                        </button>
+                    </div>
+
+
+
+                    <!-- Modal para ver editar o subir imagen -->
+
+                    <div class="modal fade " id="staticImageModal" data-bs-backdrop="static" data-bs-keyboard="false"
+                        tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                        <div class="modal-dialog " style="height: fit-content;">
+                            <div class="modal-content brutalist-card" style="z-index: 1000;">
+                                <div class="modal-header ">
+
+                                    <h2>Imagen</h2>
+
+
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                                        style="color:#000;">
+                                    </button>
+                                </div>
+
+
+                                <div class="">
+
+
+
+                                    <button type="button"
+                                        class="brutalist-card__button brutalist-card__button--read float-end float-end"
+                                        data-bs-toggle="modal" data-bs-target="#staticBackdrop" (click)="clearQueue()">
+                                        <h6 class="fs-sm"><strong><i class="fa-solid fa-trash"></i> </strong></h6>
+                                    </button>
+                                </div>
+
+                                <label for="image" class="text-white w-100">Imagen</label>
+                                <div class="row border border-white d-flex  rounded-2">
+
+                                    <input type="file" id="file" name="file" ng2FileSelect [uploader]="uploader"
+                                        class="rounded-2 btn-outline-info" />
+
+                                </div>
+
+
+                            </div>
+
+                            <!-- Fin Modal-->
+
+
+
+                        </div>
+
+                    </div>
+
+                    <!-- fin Modal para ver image-->
+
+
+
+                    <div class="col-12 float-start d-flex justify-content-center ">
+                        <input type="submit" value="Crear" class="brutalist-card__button brutalist-card__button--mark">
+                    </div>
+                </div>
+
+
+
+            </form>
+
+        </div>
+    </div>
+
+    <ng-template #loading>
+        <h2 class="text-white">Cargando...</h2>
+    </ng-template>
+</div>

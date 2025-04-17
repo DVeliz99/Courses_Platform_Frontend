@@ -1,0 +1,75 @@
+<div class="col-sm-10 col-md-8 col-lg-5   mt-3  brutalist-card" style="margin: 0 auto;">
+    <h3 class="text-center text-white brutalist-card__header"
+        style="font-size: 2.5em; color: 444; text-shadow: 2px 2px #000000;">
+        {{ page_title }}
+    </h3>
+    <p *ngIf="status!= 'success'" class="text-center brutalist-card__message text-white"
+        style="box-shadow: 5px 5px 5px rgb(255, 255, 255);">
+        Inicia sesión en la plataforma para empezar a disfrutar de todos los beneficios.
+    </p>
+
+    <hr>
+
+    <div class="alert alert-success col-md-12 mt-3 brutalist-card__message text-black" *ngIf="status == 'success'">
+        ¡Autenticación exitosa!
+    </div>
+
+    <div class="alert alert-danger col-md-12 mt-3 brutalist-card__message text-black"
+        *ngIf="status != 'success' && isLogginButtonClicked">
+        "Error en la autenticación. Por favor, verifica tus credenciales e intenta nuevamente."
+    </div>
+
+
+    <form class="  p-2" [formGroup]="loginForm" (ngSubmit)="onSubmit(loginForm) " style="margin: 0 auto;">
+        <div class="form-group">
+
+            <label for="email" class="text-white">Introduce tu dirección de correo electrónico.</label>
+            <!-- se cambia lo que esta en el campo email del objeto user gracias a la directiva de Angular (ngModel)-->
+            <input type="email" id="email" class="form-control" formControlName="email">
+
+
+
+            <!-- Si el campo ya fue tocado y el email no es valido -->
+
+            <!-- Mensaje si el campo está vacío -->
+            <div *ngIf="loginForm.get('email')?.touched && loginForm.get('email')?.hasError('required')">
+                <small class="invalid-feedback d-block">La dirección de correo electrónico no es válida. Asegúrate de
+                    ingresar un formato correcto.
+                </small>
+            </div>
+
+
+
+        </div>
+
+        <div class="form-group">
+            <label for="password" class="text-white">Introduce tu contraseña.:</label>
+            <!-- se cambia lo que esta en el campo email del objeto user gracias a la directiva de Angular (ngModel)-->
+
+
+            <input type="password" id="password" class="form-control" formControlName="password">
+
+            <!-- Si el campo ya fue tocado y el email no es valido -->
+
+            <div *ngIf="loginForm.get('password')?.touched && loginForm.get('password')?.hasError('required')">
+                <small class="invalid-feedback d-block"> La contraseña no es valida. Asegúrate de ingresar la contraseña
+                    correcta.
+                </small>
+            </div>
+
+
+            <div class="d-flex justify-content-center mt-2">
+                <input type="submit" name="" value="Autenticarse"
+                    class=" brutalist-card__button--mark brutalist-card__button text-black rounded-5"
+                    [disabled]="loginForm.invalid">
+            </div>
+
+        </div>
+
+    </form>
+
+
+
+
+
+</div>

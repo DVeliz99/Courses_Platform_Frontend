@@ -1,0 +1,254 @@
+<div class="col-sm-10 col-md-8 col-lg-5   mt-3 p-2  brutalist-card" style="margin: 0 auto;">
+    <h3 *ngIf="!isEditing" class="text-center text-white"
+        style="font-size: 2.5em; color: 444; text-shadow: 2px 2px #000000;">
+        {{ page_title_create }}
+    </h3>
+
+    <h3 *ngIf="isEditing" class="text-center text-white brutalist-card__header"
+        style="font-size: 2.5em; color: 444; text-shadow: 2px 2px #000000;">
+        {{page_title_edit}}
+    </h3>
+
+
+    <div *ngIf="!isEditing" class="p-1">
+        <p *ngIf="status!= 'success'" class=" brutalist-card__message"
+            style="box-shadow: 5px 5px 5px rgb(255, 255, 255);">
+            Crea tu propio curso y comparte tu conocimiento con el mundo
+        </p>
+    </div>
+
+    <div *ngIf="isEditing" class="p-1">
+        <p *ngIf="status!= 'success'" class="text-center text-white"
+            style="box-shadow: 5px 5px 5px rgb(255, 255, 255);">
+            Edita tu curso {{course.name}} y mejora su contenido
+        </p>
+    </div>
+
+    <hr>
+
+    <div class="alert alert-success col-md-12 mt-3" *ngIf="status == 'success'">
+        ¡Registro exitoso! <a routerLink="/home"></a>
+    </div>
+
+    <div class="alert alert-danger col-md-12 mt-3" *ngIf="status != 'success' && isCreatingBtnClicked">
+        "Error en el registro. Por favor, verifica la data e intenta nuevamente."
+    </div>
+
+
+    <form class="  p-2 " [formGroup]="courseForm" (ngSubmit)="isEditing? onUpdate(courseForm):onSubmit(courseForm)"
+        style="margin: 0 auto;">
+
+        <div class="form-group">
+            <label for="name" class="form-label text-white">Introduce el nombre del curso:</label>
+            <input type="text" class="form-control" id="name" formControlName="name">
+
+            <!-- Mensaje si el campo está vacío -->
+            <div *ngIf="courseForm.get('name')?.touched && courseForm.get('name')?.hasError('required')">
+                <small class="invalid-feedback d-block">Ingresa un nombre.</small>
+            </div>
+
+            <!-- validar es un nombre valido-->
+            <!-- <div *ngIf="courseForm.get('name')?.hasError('pattern')">
+                <small class="invalid-feedback d-block">Ingresa un nombre válido (sin caracteres especiales).</small>
+            </div> -->
+        </div>
+
+        <!-- Categorias -->
+
+        <div class="form-group mb-1">
+            <label for="category" class="text-white">Click para seleccionar la categoría:</label>
+            <div class="">
+                <div *ngIf="selectedCategory && isCategoryClicked" class="form-control mb-1"
+                    (click)="toggleShowCategories()">
+                    {{selectedCategory}}
+                </div>
+                <div style="height: 38.5px;" class="border border-black overflow-y-scroll" *ngIf="!isCategoryClicked">
+
+                    <div *ngIf=" !isCategoryClicked">
+                        <div class="form-control isMovil " *ngIf="selectedCategory=='' || !isCategoryClicked">Desliza
+                            hacia arriba para
+                            elegir.
+                        </div>
+                        <!-- attr.data-value=> valor de estado en Angular, asigna atributo-->
+
+                        <div *ngFor="let category of categories"
+                            class="text-decoration-none  border border-black w-100  "
+                            (click)="selectCategory(category.name)">
+
+
+                            <div class="form-control" *ngIf="category.name!=selectedCategory && !isCategoryClicked ">
+                                <div (click)="toggleShowCategories()">
+                                    {{category.name}}
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="form-group ">
+            <label for="description" class="text-white">Inserta descripción del curso:</label>
+            <textarea [froalaEditor]="froala_options" name="description" formControlName="description" class="w-100">
+                {{ course.detail }}
+              </textarea>
+            <div *ngIf="courseForm.get('description')?.touched && courseForm.get('description')?.hasError('required')">
+                <small class="invalid-feedback d-block">Ingresa una descripción válida.</small>
+            </div>
+        </div>
+
+        <!-- Imagen del curso-->
+        <div class="form-group mt-1">
+            <label for="image" class="text-white w-100">Imagen del curso</label>
+            <div class="row p-2 border border-white d-flex align-items-center rounded-2">
+                <div class="col-12 float-start border border-white p-1">
+                    <div class="d-flex justify-content-center align-items-center flex-column w-50  float-start ">
+                        <div *ngIf="isEditing">
+                            <!-- Falta url-->
+
+
+                            <img [src]="courseOnEditImageUrl" alt="img" height="100" class="rounded-2">
+                        </div>
+                    </div>
+
+                    <div class=" d-flex justify-content-center flex-column align-items-center w-50 float-start  ">
+
+                        <a (click)="clearQueue()" type="button"
+                            class="btn btn-outline-danger text-decoration-none ">Remover</a>
+
+                    </div>
+                </div>
+                <div class="col-12 float-start py-1">
+                    <input id="image" type="file" name="file" ng2FileSelect [uploader]="uploader"
+                        class="rounded-2 btn-outline-info" />
+                </div>
+            </div>
+
+        </div>
+
+        <div class="form-group">
+            <label for="youtubeURL" class="form-label text-white">URL del video principal del curso (YouTube)</label>
+            <input type="text" class="form-control" id="youtubeURL" formControlName="youtubeURL">
+
+            <!-- Mensaje si el campo está vacío -->
+            <div *ngIf="courseForm.get('youtubeURL')?.touched && courseForm.get('youtubeURL')?.hasError('required')">
+                <small class="invalid-feedback d-block">Ingresa una URL de Youtube.</small>
+            </div>
+
+            <!-- validar es un nombre valido-->
+            <div *ngIf="courseForm.get('youtubeURL')?.hasError('pattern')">
+                <small class="invalid-feedback d-block">Ingresa una URL válido.</small>
+            </div>
+        </div>
+
+
+        <div class="form-group">
+
+            <div *ngIf="!isEditing">
+                <label for="sections" class="text-white">Ingresa el número de secciones del curso</label>
+                <!-- se cambia lo que esta en el campo email del objeto user gracias a la directiva de Angular (ngModel)-->
+                <input type="number" id="sections" class="form-control" min="1" max="50" formControlName="sections">
+
+            </div>
+
+            <!-- Si el campo ya fue tocado y el email no es valido -->
+
+            <!-- Mensaje si el campo está vacío -->
+            <div *ngIf="courseForm.get('sections')?.touched && courseForm.get('sections')?.hasError('pattern')">
+                <small class="invalid-feedback d-block">
+                    Numero no valido.
+                </small>
+            </div>
+
+
+            <div *ngIf="course_id">
+                <a href="" routerLink="/sections" [queryParams]="{id:course_id}" class="brutalist-card__message"> Edita
+                    las secciones del curso
+                    - Haz clic para
+                    continuar</a>
+            </div>
+
+        </div>
+
+
+        <div class="form-group">
+
+            <label for="priceNow" class="text-white">Ingresa el precio actual.</label>
+            <!-- se cambia lo que esta en el campo email del objeto user gracias a la directiva de Angular (ngModel)-->
+            <input type="number" id="priceNow" class="form-control" min="1" max="50" formControlName="priceNow">
+
+
+            <!-- Si el campo ya fue tocado y el email no es valido -->
+
+            <!-- Mensaje si el campo está vacío -->
+            <div *ngIf="courseForm.get('priceNow')?.touched && courseForm.get('priceNow')?.hasError('required')">
+                <small class="invalid-feedback d-block">
+                    Precio no es valido.
+                </small>
+            </div>
+
+        </div>
+
+
+        <div class="form-group">
+
+            <label for="priceBefore" class="text-white">Ingresa el precio anterior.</label>
+            <!-- se cambia lo que esta en el campo email del objeto user gracias a la directiva de Angular (ngModel)-->
+            <input type="number" id="priceBefore" class="form-control" min="1" max="50" formControlName="priceBefore">
+
+
+            <!-- Si el campo ya fue tocado y el email no es valido -->
+
+            <!-- Mensaje si el campo está vacío -->
+            <div *ngIf="courseForm.get('priceBefore')?.touched && courseForm.get('priceBefore')?.hasError('required')">
+                <small class="invalid-feedback d-block">
+                    Precio no es valido.
+                </small>
+            </div>
+
+        </div>
+
+
+
+
+
+        <div *ngIf="!isEditing" class="d-flex justify-content-center mt-2">
+
+            <button type="submit" class="brutalist-card__button brutalist-card__button--mark brutalist-card__message"
+                [disabled]="courseForm.invalid">
+
+                <span class="front">Crear curso </span>
+            </button>
+        </div>
+
+        <div *ngIf="isEditing" class="d-flex justify-content-center mt-2">
+
+            <button type="submit" class="brutalist-card__button brutalist-card__button--mark brutalist-card__message"
+                [disabled]="courseForm.invalid">
+                <span class="shadow"></span>
+                <span class="edge"></span>
+                <span class="front">Editar curso </span>
+            </button>
+        </div>
+
+        <!--  [disabled]="courseForm.invalid"-->
+
+
+
+
+    </form>
+
+
+    <!-- <button class="btn btn-success" (click)="activateIziToast()">
+        Activar Izitoast
+    </button> -->
+
+
+
+
+
+
+
+</div>

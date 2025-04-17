@@ -1,0 +1,173 @@
+<div class="col-sm-10 col-md-8 col-lg-5   mt-3 p-2  brutalist-card" style="margin: 0 auto;">
+    <h3 class="text-center text-white" style="font-size: 2.5em; color: 444; text-shadow: 2px 2px #000000;">
+        {{ isEditing? 'Editar video':'Registrar video'}}
+    </h3>
+
+
+    <div *ngIf="isEditing" class="p-1">
+        <p *ngIf="status!= 'success'" class="text-center text-white"
+            style="box-shadow: 5px 5px 5px rgb(255, 255, 255);">
+            Edita tu curso {{course.name}} y mejora su contenido
+        </p>
+    </div>
+
+    <hr>
+
+    <div class="alert alert-success col-md-12 mt-3" *ngIf="status == 'success'">
+        ¡Registro exitoso! <a routerLink="/home"></a>
+    </div>
+
+    <div class="alert alert-danger col-md-12 mt-3" *ngIf="status != 'success' && isCreatingBtnClicked">
+        "Error en el registro. Por favor, verifica la data e intenta nuevamente."
+    </div>
+
+
+    <!--  (ngSubmit)="isEditing? onUpdate(courseForm):onSubmit(courseForm)"-->
+    <form class="  p-2 " [formGroup]="videoForm" style="margin: 0 auto;" (ngSubmit)="onSubmit(videoForm)">
+
+        <div *ngIf="course">
+            <h4 class="brutalist-card__header text-white">{{course.name}}</h4>
+
+        </div>
+
+        <div class="form-group">
+            <label for="title" class="form-label text-white">Introduce el titulo:</label>
+            <input type="text" class="form-control" id="title" formControlName="title">
+
+            <!-- Mensaje si el campo está vacío -->
+            <div *ngIf="videoForm.get('title')?.touched && videoForm.get('title')?.hasError('required')">
+                <small class="invalid-feedback d-block">Ingresa un nombre.</small>
+            </div>
+
+            <!-- validar es un nombre valido-->
+            <!-- <div *ngIf="courseForm.get('name')?.hasError('pattern')">
+                <small class="invalid-feedback d-block">Ingresa un nombre válido (sin caracteres especiales).</small>
+            </div> -->
+        </div>
+
+        <!-- sections -->
+
+
+
+        <div class="form-group ">
+            <label for="content" class="text-white">Inserta content del video:</label>
+            <textarea [froalaEditor]="froala_options" name="content" formControlName="content" class="w-100">
+                {{ course }}
+              </textarea>
+            <div *ngIf="videoForm.get('content')?.touched && videoForm.get('content')?.hasError('required')">
+                <small class="invalid-feedback d-block">Ingresa una descripción válida.</small>
+            </div>
+        </div>
+
+        <!-- youtubeURL-->
+        <div class="form-group">
+            <label for="youtubeURL" class="form-label text-white">URL del video principal del curso (YouTube)</label>
+            <input type="text" class="form-control" id="youtubeURL" formControlName="youtubeURL">
+
+            <!-- Mensaje si el campo está vacío -->
+            <div *ngIf="videoForm.get('youtubeURL')?.touched && videoForm.get('youtubeURL')?.hasError('required')">
+                <small class="invalid-feedback d-block">Ingresa una URL de Youtube.</small>
+            </div>
+
+            <!-- validar es un nombre valido-->
+            <div *ngIf="videoForm.get('youtubeURL')?.hasError('pattern')">
+                <small class="invalid-feedback d-block">Ingresa una URL válido.</small>
+            </div>
+        </div>
+
+
+
+        <!-- Secciones -->
+
+        <div class="form-group mb-1">
+            <label for="section" class="text-white">Click para seleccionar la sección:</label>
+
+            <div class="">
+                <div *ngIf="selectedSecction>0 && isSectionOptionClicked" class="form-control mb-1"
+                    (click)="toggleShowSections()">
+                    {{selectedSecction}}
+                </div>
+                <div style="height: 38.5px;" class="border border-black overflow-y-scroll"
+                    *ngIf="!isSectionOptionClicked">
+
+                    <div *ngIf=" !isSectionOptionClicked">
+                        <div class="form-control isMovil " *ngIf="selectedSecction==null || !isSectionOptionClicked">
+                            Desliza
+                            hacia arriba para
+                            elegir.
+                        </div>
+                        <!-- attr.data-value=> valor de estado en Angular, asigna atributo-->
+
+                        <div *ngFor="let i of getNumberArray(indexOfGroup)"
+                            class="text-decoration-none  border border-black w-100  " (click)="selectSection(i)">
+
+
+                            <div class="form-control" *ngIf="i!=selectedSecction && !isSectionOptionClicked ">
+                                <div (click)="toggleShowSections()">
+                                    {{i}}
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+
+
+        <!-- titulo de la sección-->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        <div *ngIf="!isEditing" class="d-flex justify-content-center mt-2">
+
+            <button type="submit" class="brutalist-card__button brutalist-card__button--mark ">
+
+                <!-- [disabled]="videoForm.invalid"-->
+
+                Crear video
+            </button>
+        </div>
+
+        <div *ngIf="isEditing" class="d-flex justify-content-center mt-2">
+
+            <button type="submit" class="brutalist-card__button brutalist-card__button--mark "
+                [disabled]="videoForm.invalid">
+
+                Editar video
+            </button>
+        </div>
+
+        <!--  [disabled]="courseForm.invalid"-->
+
+
+
+
+    </form>
+
+
+    <!-- <button class="btn btn-success" (click)="activateIziToast()">
+        Activar Izitoast
+    </button> -->
+
+
+
+
+
+
+
+</div>

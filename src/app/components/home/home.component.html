@@ -1,0 +1,224 @@
+<div class="container ">
+    <div class="row ">
+        <div class=" mt-3 ">
+
+            <hr>
+
+            <div class="row  d-flex justify-content-center ">
+
+
+
+
+                <div class=" d-flex justify-content-center align-content-center  ">
+                    <div class="card-container   ">>
+                        <!-- Card UI-->
+
+                        <!-- From Uiverse.io by 0xnihilism -->
+
+                        <div *ngIf="courses && courses.length > 0" class="d-flex  justify-content-around flex-wrap">
+                            <div class="brutalist-card   mx-2 mb-4" *ngFor="let course of courses">
+                                <div *ngIf="course">
+                                    <div class="brutalist-card__header">
+
+                                        <div class="brutalist-card__alert  w-100">
+                                            <h5 class="text-center">{{course.name}}</h5>
+
+                                        </div>
+                                    </div>
+                                    <div class="brutalist-card__message d-flex justify-content-center">
+                                        <div *ngIf="course.url && course.url != null">
+                                            <a href=""> <img src="{{getThumb(course?.url,'maxresdefault')}}" alt="img"
+                                                    height="130"></a>
+
+                                        </div>
+
+                                        <div *ngIf="!course.url && course.url != null">
+                                            <a href=""> <img src="/icons/no_video.png" alt="img" height="130"></a>
+
+                                        </div>
+                                    </div>
+
+                                    <!-- Botones -->
+                                    <div *ngIf="identityString && (identityString.sub==1 || identityString.role == 'ROLE_ADMIN')"
+                                        class="brutalist-card__actions d-flex">
+                                        <a type="button" class="brutalist-card__button brutalist-card__button--mark"
+                                            href="#" routerLink="/video" [queryParams]="{id: course.id}">Crear
+                                            video</a>
+                                        <button type="button"
+                                            class="brutalist-card__button brutalist-card__button--read" href="#"
+                                            [attr.data-target]="'#delete'+course.id" data-bs-toggle="modal"
+                                            data-bs-target="#staticBackdrop"
+                                            (click)="onUpdateDataCourse(course)">Eliminar
+                                            curso</button>
+                                        <a class="brutalist-card__button brutalist-card__button--mark"
+                                            routerLink="/new_course" [queryParams]="{id: course.id}">Editar
+                                            curso</a>
+
+                                        <hr>
+
+                                        <!--  [routerLink]="['/new_course']" [queryParams]="{id:course.id}"-->
+
+
+
+                                        <!-- Modal para eliminar -->
+
+
+                                        <div *ngIf="courseToModify" class="modal fade" id="staticBackdrop"
+                                            data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+                                            aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                                            <div class="modal-dialog modal-brutalist-card" style="height: fit-content;">
+                                                <div class="modal-content border border-black">
+
+                                                    <div class="modal-header">
+                                                        <i class="fa-solid fa-trash"></i>
+                                                        <h5 class="modal-title ms-2" id="staticBackdropLabel">¿Eliminar
+                                                            el
+                                                            curso?
+                                                        </h5>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                            aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        El curso <strong>{{courseToModify.name}}</strong> será eliminado
+                                                        permanentemente y no se podrá
+                                                        recuperar.
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        {{courseToModify.detail}}
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="exit-button"
+                                                            data-bs-dismiss="modal"></button>
+
+                                                        <div class="d-flex w-100 justify-content-between">
+                                                            <button type="button"
+                                                                class="brutalist-card__button brutalist-card__button--read"
+                                                                data-bs-dismiss="modal">Eliminar</button>
+                                                            <button type="button"
+                                                                class="brutalist-card__button brutalist-card__button--mark"
+                                                                data-bs-dismiss="modal">Cancelar</button>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Fin Modal-->
+
+                                    </div>
+
+                                    <!-- Fin Botones -->
+
+                                    <form action="" class="">
+                                        <div class=" border border-black">
+
+                                            <div class="w-100 py-1 float-start d-flex justify-content-center">
+                                                <div class="col-6 float-start d-flex justify-content-center">
+                                                    <button type="button"
+                                                        class="brutalist-card__button brutalist-card__button--mark"
+                                                        href="#" [attr.data-target]="'#detailModal'+course.id"
+                                                        data-bs-toggle="modal" data-bs-target="#detailModal"
+                                                        (click)="onUpdateDataCourse(course)">Detalle</button>
+
+                                                </div>
+
+
+                                                <div *ngIf="!isCourseBought(course.id)"
+                                                    class="col-6 float-start  d-flex justify-content-center align-items-center">
+                                                    <span> {{'$'+course.price_now}}</span>
+                                                </div>
+                                            </div>
+
+                                            <!-- Inicio Modal para detail-->
+
+                                            <div *ngIf="courseToModify" class="modal fade" id="detailModal"
+                                                data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+                                                aria-labelledby="detailModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog modal-brutalist-card">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <div class="row">
+                                                                <div class="col-3">
+                                                                    <i class="fa-solid fa-info"></i>
+
+
+                                                                </div>
+                                                                <div class="col-9 d-flex justify-content-center">
+                                                                    <h5 class="modal-title ms-2"
+                                                                        id="staticBackdropLabel">
+                                                                        {{courseToModify.name}}</h5>
+                                                                </div>
+                                                            </div>
+                                                            <button type="button" class="btn-close"
+                                                                data-bs-dismiss="modal" aria-label="Close"></button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            {{courseToModify.detail}}
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="exit-button"
+                                                                data-bs-dismiss="modal"></button>
+
+                                                            <button type="button"
+                                                                class="brutalist-card__button brutalist-card__button--mark"
+                                                                data-bs-dismiss="modal">Salir</button>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- fin Modal para editar-->
+
+                                            <input type="hidden" name="course_id" value="{{course.id}}">
+
+                                            <!-- *ngIf="course.bought !=1 && course.cart!= 1"-->
+                                            <div class="float-start w-100 ">
+                                                <div class="d-flex justify-content-center py-1">
+                                                    <a *ngIf="!isCourseBought(course.id)" type="button"
+                                                        (click)="addToCart(course.id)"
+                                                        class="brutalist-card__button brutalist-card__button--mark ">
+                                                        <i class="fa-solid fa-cart-shopping"></i>
+                                                    </a>
+                                                    <a class="brutalist-card__button brutalist-card__button--read"
+                                                        [routerLink]="'/course_detail'"
+                                                        [queryParams]="{id: course.id}">Ir
+                                                        al
+                                                        curso</a>
+                                                </div>
+                                            </div>
+
+
+                                        </div>
+
+
+
+
+                                        <div class="d-flex justify-content-center w-100">
+                                            <!-- *ngIf="course.bought==1" -->
+
+                                            <a href="" *ngIf="quantity>0"
+                                                class="brutalist-card__button brutalist-card__button--mark mt-2"
+                                                id="datil-button">Ir a la cesta</a>
+
+                                        </div>
+
+
+                                        <!-- fin Modal-->
+                                    </form>
+
+
+                                </div>
+
+
+
+                            </div>
+                        </div>
+
+                    </div>
+                    <!-- Fin de card UI-->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

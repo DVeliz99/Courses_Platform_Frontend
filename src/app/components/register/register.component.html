@@ -1,0 +1,104 @@
+<div class="col-sm-10 col-md-8 col-lg-5   mt-3  brutalist-card" style="margin: 0 auto;">
+    <h3 class="brutalist-card__header text-center" style="font-size: 2.5em; color: 444; text-shadow: 2px 2px #000000;">
+        {{ page_title }}
+    </h3>
+    <!-- <p *ngIf="status!= 'success'" class="text-center" style="box-shadow: 5px 5px 5px rgb(255, 255, 255);">
+        Inicia sesión en la plataforma para empezar a disfrutar de todos los beneficios.
+    </p> -->
+
+    <hr>
+
+    <div class="alert alert-success col-md-12 mt-3 text-black" *ngIf="status == 'success'">
+        ¡Registro exitoso! <a routerLink="/home"></a>
+    </div>
+
+    <div class="alert alert-danger col-md-12 mt-3 text-black" *ngIf="status != 'success' && isRegisterButtonClicked">
+        "Error en el registro. Por favor, verifica la data e intenta nuevamente."
+    </div>
+
+
+    <form class="  p-2" [formGroup]="registerForm" (ngSubmit)="onSubmit(registerForm) " style="margin: 0 auto;">
+
+        <div class="form-group">
+            <label for="name" class="form-label text-white">Introduce tu nombre:</label>
+            <input type="text" class="form-control" id="name" formControlName="name">
+
+            <!-- Mensaje si el campo está vacío -->
+            <div *ngIf="registerForm.get('name')?.touched && registerForm.get('name')?.hasError('required')">
+                <small class="invalid-feedback d-block">Ingresa un nombre.</small>
+            </div>
+
+            <!-- validar es un nombre valido-->
+            <div *ngIf="registerForm.get('name')?.hasError('pattern')">
+                <small class="invalid-feedback d-block">Ingresa un nombre válido (sin caracteres especiales).</small>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="surname" class="form-label text-white">Introduce tu nombre:</label>
+            <input type="text" class="form-control" id="surname" formControlName="surname">
+
+            <!-- Mensaje si el campo está vacío -->
+            <div *ngIf="registerForm.get('surname')?.touched && registerForm.get('surname')?.hasError('required')">
+                <small class="invalid-feedback d-block">Ingresa un apellido.</small>
+            </div>
+
+            <!-- validar es un nombre valido-->
+            <div *ngIf="registerForm.get('surname')?.hasError('pattern')">
+                <small class="invalid-feedback d-block">Ingresa un apellido válido (sin caracteres especiales).</small>
+            </div>
+        </div>
+
+
+        <div class="form-group">
+
+            <label for="email" class="text-white">Introduce tu dirección de correo electrónico.</label>
+            <!-- se cambia lo que esta en el campo email del objeto user gracias a la directiva de Angular (ngModel)-->
+            <input type="email" id="email" class="form-control" formControlName="email">
+
+
+
+            <!-- Si el campo ya fue tocado y el email no es valido -->
+
+            <!-- Mensaje si el campo está vacío -->
+            <div *ngIf="registerForm.get('email')?.touched && registerForm.get('email')?.hasError('required')">
+                <small class="invalid-feedback d-block">La dirección de correo electrónico no es válida. Asegúrate de
+                    Ingresar un formato correcto.
+                </small>
+            </div>
+
+
+
+        </div>
+
+        <div class="form-group">
+            <label for="password" class="text-white">Introduce tu contraseña.:</label>
+            <!-- se cambia lo que esta en el campo email del objeto user gracias a la directiva de Angular (ngModel)-->
+
+
+            <input type="password" id="password" class="form-control" formControlName="password">
+
+            <!-- Si el campo ya fue tocado y el email no es valido -->
+
+            <div *ngIf="registerForm.get('password')?.touched && registerForm.get('password')?.hasError('required')">
+                <small class="invalid-feedback d-block"> La contraseña no es valida. Asegúrate de ingresar la contraseña
+                    correcta.
+                </small>
+            </div>
+
+
+            <div class="d-flex justify-content-center mt-2">
+                <button type="submit" class=" brutalist-card__button  brutalist-card__button--mark rounded-5"
+                    [disabled]="registerForm.invalid">Registrarse
+                </button>
+            </div>
+
+        </div>
+
+    </form>
+
+
+
+
+
+</div>
