@@ -193,7 +193,7 @@ export class AppComponent implements OnInit, AfterViewInit, AfterViewChecked, On
 
 
   getAvatarPath(avatar: string) {
-    return "http://backend.rest/api/user/avatar/" + avatar;
+    return Global.url + "user/avatar/" + avatar;
   }
 
 
@@ -268,7 +268,7 @@ export class AppComponent implements OnInit, AfterViewInit, AfterViewChecked, On
 
     console.log('Llamado al metodo logout');
     this._authService.logout();
-  
+
 
   }
 
