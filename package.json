@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
+    "start": "serve -s dist/frontend",
     "build": "ng build",
     "build:prod": "ng build --configuration production",
     "watch": "ng build --watch --configuration development",
@@ -41,6 +41,7 @@
     "ngx-bootstrap": "^19.0.2",
     "primeng": "^19.0.9",
     "rxjs": "~7.8.0",
+    "serve": "^14.2.4",
     "tslib": "^2.3.0",
     "zone.js": "~0.15.0"
   },
