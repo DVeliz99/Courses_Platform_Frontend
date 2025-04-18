@@ -7,7 +7,7 @@
         <div class="">
             <div class="comments p-2 " *ngFor="let reply of repliesData">
                 <div class=" " *ngIf="usersReply.length>0">
-                    <div class="user d-flex flex-row py-2 border border-black" *ngFor="let user of usersReply">
+                    <div class="user d-flex flex-row py-2 " *ngFor="let user of usersReply">
                         <div class="d-flex flex-column col-10 ">
                             <div *ngIf="user.id==reply.user_id">
                                 <div class="user-pic" *ngIf="user.image">
