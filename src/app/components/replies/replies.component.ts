@@ -194,8 +194,8 @@ export class RepliesComponent implements OnInit, AfterViewInit {
   }
 
 
-  getAvatarPath(image: string) {
-    return Global.url + 'user/avatar/' + image;
+  getAvatarPath(user: string, image: string) {
+    return Global.url + 'user/avatar/' + user + '_' + image;
   }
 
   getReplyImage(image: string) {

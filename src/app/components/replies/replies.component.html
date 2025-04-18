@@ -11,7 +11,8 @@
                         <div class="d-flex flex-column col-10 ">
                             <div *ngIf="user.id==reply.user_id">
                                 <div class="user-pic" *ngIf="user.image">
-                                    <img *ngIf="user?.image" src="{{getAvatarPath(user?.image)}}" alt="img" height="40">
+                                    <img *ngIf="user?.image" src="{{getAvatarPath(user?.name,user?.image)}}" alt="img"
+                                        height="40">
                                 </div>
                                 <div class="user-info">
                                     <h6>{{user.name}}</h6>
