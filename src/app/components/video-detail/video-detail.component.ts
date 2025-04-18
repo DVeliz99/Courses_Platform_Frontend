@@ -370,7 +370,7 @@ Validators.pattern('^[a-zA-Z]+$') */
   }
 
   getAvatarPath(user: string, avatar: string) {
-    return "http://backend.rest/api/user/avatar/" + avatar;
+    return Global.url + "/user/avatar/" + user + '_' + avatar;
   }
 
   getCommentImagePath(image: string) {
