@@ -188,12 +188,14 @@ export class AppComponent implements OnInit, AfterViewInit, AfterViewChecked, On
     this.avatar = this.decodedIdentity.image;
 
     this.avatarUrl = this.getAvatarPath(this.avatar);
+    console.log('avatarUrl', this.avatarUrl);
+
   }
 
 
 
   getAvatarPath(avatar: string) {
-    return Global.url + "user/avatar/" + avatar;
+    return Global.url + "user/avatar/" + this.decodedIdentity.name + '_' + avatar;
   }
 
 
