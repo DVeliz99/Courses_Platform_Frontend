@@ -357,7 +357,7 @@ export class CourseDetailComponent implements OnInit, AfterViewInit {
           this.courseProgress = this.currentCourse.progreso;
 
           console.log('progreso del curso actual', this.courseProgress);
-          if (this.courseProgress) {
+          if (this.courseProgress !== undefined && this.courseProgress !== null) {
             this.updateChartData();
           }
 
@@ -377,6 +377,8 @@ export class CourseDetailComponent implements OnInit, AfterViewInit {
 
   //Actualizar datos en el grafico dependiendo el servicio
   updateChartData() {
+    console.log('Actualizando gráfico con progreso:', this.courseProgress); // 🔍 Este
+
 
     console.log('this.courseProgress en updateChartData', this.courseProgress);
 
