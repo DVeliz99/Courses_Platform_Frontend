@@ -51,7 +51,7 @@
 
         <div class="form-group ">
             <label for="content" class="text-white">Inserta content del video:</label>
-            <textarea [froalaEditor]="froala_options" name="content" formControlName="content" class="w-100">
+            <textarea name="content" formControlName="content" class="w-100">
                 {{ course }}
               </textarea>
             <div *ngIf="videoForm.get('content')?.touched && videoForm.get('content')?.hasError('required')">

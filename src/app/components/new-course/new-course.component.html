@@ -91,7 +91,7 @@
 
         <div class="form-group ">
             <label for="description" class="text-white">Inserta descripción del curso:</label>
-            <textarea [froalaEditor]="froala_options" name="description" formControlName="description" class="w-100">
+            <textarea name="description" formControlName="description" class="w-100">
                 {{ course.detail }}
               </textarea>
             <div *ngIf="courseForm.get('description')?.touched && courseForm.get('description')?.hasError('required')">
