@@ -35,12 +35,14 @@
                                 <strong> <i class="fa-solid fa-image"></i></strong>
                             </a> -->
 
-                            <button type="button" class="brutalist-card__button brutalist-card__button--mark"
-                                data-bs-toggle="modal" data-bs-target="#editReply" (click)="updateCurrentReply(reply)">
+                            <button *ngIf="this.identityString.sub==reply.user_id" type="button"
+                                class="brutalist-card__button brutalist-card__button--mark" data-bs-toggle="modal"
+                                data-bs-target="#editReply" (click)="updateCurrentReply(reply)">
                                 <h6><strong><i class="fa-solid fa-pen"></i></strong></h6>
                             </button>
 
-                            <button type="button" class="brutalist-card__button brutalist-card__button--read"
+                            <button *ngIf="this.identityString.sub==reply.user_id || identityString.sub==1"
+                                type="button" class="brutalist-card__button brutalist-card__button--read"
                                 (click)="onDelete(reply)">
                                 <h6><strong><i class="fa-solid fa-trash"></i></strong></h6>
                             </button>
