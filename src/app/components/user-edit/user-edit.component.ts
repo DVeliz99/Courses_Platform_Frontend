@@ -351,7 +351,7 @@ export class UserEditComponent implements OnInit, AfterViewInit {
 
   getAvatarPath(avatar: string) {
 
-    return "http://backend.rest/api/user/avatar/" + this.name + '_' + avatar;
+    return Global.url + "user/avatar/" + this.name + '_' + avatar;
 
   }
 
